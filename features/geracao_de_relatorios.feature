@@ -58,3 +58,26 @@ Feature: Geração de Relatórios
     And o resíduo "Ácido Clorídrico" possui tipo como "Liquido Inorganico", peso como "300"Kg e código ONU como "2810" no laboratorio de "Planejamento Avaliação e Síntese de Fármacos"
     When eu tento produzir um relatório dos resíduos do laboratório de "Planejamento Avaliação e Síntese de Fármacos", com os filtros tipo e peso.
     Then o sistema retorna as informações "Liquido Inorganico" e "300"Kg para o resíduo "Ácido Clorídrico"
+  
+  @c7
+  Scenario: Produzir relatório de Departamentos / Laboratórios sem resíduos associados
+    Given que estou na página "reports/new"
+    And a opção de gerar por "Departamentos" está selecionada
+    And eu vejo uma lista de "Departamentos" disponíveis no sistema
+    And eu vejo na lista o departamento de "Ciências Farmacêuticas" com nenhum resíduo
+    When eu seleciono a opção departamento de "Ciências Farmacêuticas" na lista
+    And peço para criar um novo relátorio
+    Then eu vejo uma mensagem de notificação informando a inexistência de resíduos ligados ao departamento de "Ciências Farmacêuticas".
+  
+  @c8
+  Scenario: Produzir relatório de Departamentos / Laboratórios / Resíduos
+    Given que estou na página "reports/new"
+    And a opção de gerar por "Laboratórios" está selecionada
+    And eu vejo uma lista de "Laboratórios" disponíveis no sistema
+    And o laboratório de "Bioprocessos e Bioprodutos" possui o resíduo "Ácido Nítrico" onde o estado físico é "Liquido Inorganico" e a quantidade total é "93"Kg
+    When eu seleciono a opção "Bioprocessos e Bioprodutos"
+    And seleciono os filtros "Kind" e "Total"
+    And peço para criar um novo relátorio
+    Then sou redirecionado para a página de resumo do sistema
+    And vejo uma tabela com os dados sobre o "Laboratório de Bioprocessos e Bioprodutos" onde há 3 colunas, contendo nome, tipo e quantidade total dos resíduos
+    And vejo na coluna nome "Ácido Nítrico", na coluna estado físico "Líquido" e na coluna quantidade total "93""Kg".

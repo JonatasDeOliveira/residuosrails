@@ -63,7 +63,7 @@ Given(/^o sistema possui o departamento de "([^"]*)" cadastrado com o resíduo "
   expect(reg.weight).to eq(res_total.to_f())
 end
 
-When(/^eu tento gerar um relatório dos resíduos dos departamentos de "([^"]*)", "([^"]*)" e "([^"]*)"$/) do |arg1, arg2, arg3|
+When(/^eu tento gerar um relatório dos resíduos dos departamentos de "([^"]*)", "([^"]*)" e "([^"]*)"$/) do |dep1, dep2, dep3|
   rep = {report: {generate_by: 1, begin_date: "01/01/2001".to_date, end_date: "29/12/2029".to_date, f_unit: false, f_state: false, f_kind: false, f_onu: false, f_blend: false, f_code: false, f_total: true}}
   post '/reports', rep
   repc = {reportcell: {dep_name: arg1}}
@@ -75,7 +75,7 @@ When(/^eu tento gerar um relatório dos resíduos dos departamentos de "([^"]*)"
 end
 
 Then(/^o sistema retorna o valor de "([^"]*)"Kg para o resíduo "([^"]*)"$/) do |arg1, arg2|
-  repc = Reportcell.where(res_name: arg2)
+  repc = Report.last.reportcells.where(res_name: arg2)
   total = 0
   repc.each do |it|
     total += it.total
@@ -86,13 +86,9 @@ end
 Given(/^o resíduo "([^"]*)" possui tipo como "([^"]*)", peso como "([^"]*)"Kg e código ONU como "([^"]*)" no laboratorio de "([^"]*)"$/) do |res_name, res_kind, res_weight, res_onu, lab_name|
   lab = Laboratory.find_by(name: lab_name)
   expect(lab).to_not be nil
-  res = {residue: {name: res_name, kind: res_kind, onu: res_onu, laboratory_id: lab.id}}
-  post '/residues', res
-  res = Residue.find_by(name: res_name, laboratory_id: lab.id)
+  res = createResidue({residue: {name: res_name, kind: res_kind, onu: res_onu, laboratory_id: lab.id}})
   expect(res).to_not be nil
-  reg = {register: {weight: res_weight.to_f(), residue_id: res.id, department_id: lab.department_id, laboratory_id: lab.id}}
-  post '/update_weight', reg
-  reg = res.registers.last
+  reg = updateWeight({register: {weight: res_weight.to_f(), residue_id: res.id, department_id: lab.department_id, laboratory_id: lab.id}})
   expect(reg.weight).to eq(res_weight.to_f())
 end
 
@@ -111,6 +107,76 @@ Then(/^o sistema retorna as informações "([^"]*)" e "([^"]*)"Kg para o resídu
   end
   expect(total).to eq(arg2.to_f())
   expect(repc[0].kind).to eq (arg1)
+end
+
+Given(/^que estou na página "([^"]*)"$/) do |page|
+  visit '/' + page
+end
+
+Given(/^a opção de gerar por "([^"]*)" está selecionada$/) do |param|
+  if param == "Coleções" then 
+    choose('rb0')
+    radio = 'rb0'
+  end 
+  if param == "Departamentos" then
+    choose('rb1')
+    radio = 'rb1'
+  end
+  if param == "Laboratórios" then
+    choose('rb2')
+    radio = 'rb2'
+  end
+  if param == "Resíduos" then
+    choose('rb3')
+    radio = 'rb3'
+  end
+  expect(find_field(radio)).to be_checked
+end
+
+Given(/^eu vejo uma lista de "([^"]*)" disponíveis no sistema$/) do |arg1|
+  page Nokogiri::HTML(RestClient.get("https://residuos-quimicos-lucas-rufino.c9users.io/reports/new"))
+  obj = page.css('li')
+  expect(obj).to be nil
+end
+
+Given(/^eu vejo na lista o "([^"]*)" com nenhum resíduo$/) do |arg1|
+  pending # Write code here that turns the phrase above into concrete actions
+end
+
+When(/^eu seleciono a opção "([^"]*)" na lista$/) do |arg1|
+  pending # Write code here that turns the phrase above into concrete actions
+end
+
+When(/^peço para criar um novo relátorio$/) do
+  pending # Write code here that turns the phrase above into concrete actions
+end
+
+Then(/^eu vejo uma mensagem de notificação informando a inexistência de resíduos ligados ao "([^"]*)"\.$/) do |arg1|
+  pending # Write code here that turns the phrase above into concrete actions
+end
+
+Given(/^o laboratório de "([^"]*)" possui o resíduo "([^"]*)" onde o estado físico é "([^"]*)" e a quantidade total é "([^"]*)"Kg$/) do |arg1, arg2, arg3, arg4|
+  pending # Write code here that turns the phrase above into concrete actions
+end
+
+When(/^eu seleciono a opção "([^"]*)"$/) do |arg1|
+  pending # Write code here that turns the phrase above into concrete actions
+end
+
+When(/^seleciono os filtros "([^"]*)" e "([^"]*)"$/) do |arg1, arg2|
+  pending # Write code here that turns the phrase above into concrete actions
+end
+
+Then(/^sou redirecionado para a página de resumo do sistema$/) do
+  pending # Write code here that turns the phrase above into concrete actions
+end
+
+Then(/^vejo uma tabela com os dados sobre o "([^"]*)" onde há (\d+) colunas, contendo nome, tipo e quantidade total dos resíduos$/) do |arg1, arg2|
+  pending # Write code here that turns the phrase above into concrete actions
+end
+
+Then(/^vejo na coluna nome "([^"]*)", na coluna estado físico "([^"]*)" e na coluna quantidade total "([^"]*)""([^"]*)"\.$/) do |arg1, arg2, arg3, arg4|
+  pending # Write code here that turns the phrase above into concrete actions
 end
 
 def createDepartment(dep)

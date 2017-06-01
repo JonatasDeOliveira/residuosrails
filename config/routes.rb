@@ -14,7 +14,6 @@ Rails.application.routes.draw do
   
   get '/main_fac', to: 'application#main_fac'
   get '/main_adm', to: 'application#main_adm'
-  get '/genarate_report', to: 'application#genarate_report'
   get '/statistic', to: 'application#statistic'
   get '/request', to: 'application#request'
   get '/account', to: 'application#account'

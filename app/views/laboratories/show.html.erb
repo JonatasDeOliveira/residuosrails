@@ -7,12 +7,16 @@
 
 <p>
   <strong>Department:</strong>
-  <%= @laboratory.department %>
+  <%= Department.find(@laboratory.department_id).name %>
 </p>
 
 <p>
   <strong>User:</strong>
-  <%= @laboratory.user %>
+  <% if @laboratory.user_id != nil %>
+    <%= User.find(@laboratory.user_id).name %>
+  <% else %>
+    Usuário não definido
+  <% end %>
 </p>
 
 <%= link_to 'Edit', edit_laboratory_path(@laboratory) %> |

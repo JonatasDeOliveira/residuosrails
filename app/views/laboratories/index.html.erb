@@ -16,8 +16,12 @@
     <% @laboratories.each do |laboratory| %>
       <tr>
         <td><%= laboratory.name %></td>
-        <td><%= laboratory.department %></td>
-        <td><%= laboratory.user %></td>
+        <td><%= Department.find(laboratory.department_id).name %></td>
+        <% if laboratory.user_id != nil %>
+          <td><%= Laboratory.find(laboratory.user_id).name %></td>
+        <% else %>
+          <td>Usuário não definido</td>
+        <% end %>
         <td><%= link_to 'Show', laboratory %></td>
         <td><%= link_to 'Edit', edit_laboratory_path(laboratory) %></td>
         <td><%= link_to 'Destroy', laboratory, method: :delete, data: { confirm: 'Are you sure?' } %></td>

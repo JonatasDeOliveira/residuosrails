@@ -18,12 +18,7 @@
 
   <div class="field">
     <%= f.label :department_id %>
-    <%= f.text_field :department_id %>
-  </div>
-
-  <div class="field">
-    <%= f.label :user_id %>
-    <%= f.text_field :user_id %>
+    <%= f.collection_select(:department_id, Department.all.order(:name), :id, :name) %>
   </div>
 
   <div class="actions">

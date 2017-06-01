@@ -13,7 +13,10 @@
 
   <div class="field">
     <%= f.label :generate_by %>
-    <%= f.number_field :generate_by %>
+    <%= f.radio_button :generate_by, 0, :checked => true , :id => 'rb0' %> Coleção <br>
+    <%= f.radio_button :generate_by, 1, :checked => false , :id => 'rb1'%> Departamento <br>
+    <%= f.radio_button :generate_by, 2, :checked => false , :id => 'rb2'%> Laboratório <br>
+    <%= f.radio_button :generate_by, 3, :checked => false , :id => 'rb3'%> Resíduos
   </div>
 
   <div class="field">
@@ -58,13 +61,34 @@
 
   <div class="field">
     <%= f.label :f_total %>
-    <%= f.text_field :f_total %>
+    <%= f.check_box :f_total %>
   </div>
 
   <div class="field">
     <%= f.label :collection_id %>
     <%= f.text_field :collection_id %>
   </div>
+  
+  <ul>
+    <% Department.all.order(:name).each do |dep| %>
+      <li> <%= dep.name %></li>
+    <% end %>
+  <% if @report.generate_by == 1 %>
+    <% Department.all.order(:name).each do |dep| %>
+      <li> <%= dep.name %></li>
+    <% end %>
+  <% else %>
+    <%if @report.generate_by == 2 %>
+      <% Laboratory.all.order(:name).each do |dep| %>
+        <li> <%= dep.name %></li>
+      <% end %>
+    <% else @report.generate_by == 3 %>
+      <% Residue.all.order(:name).each do |dep| %>
+        <li> <%= dep.name %></li>
+      <% end %>
+    <% end %>
+  <% end %>
+  </ul>
 
   <div class="actions">
     <%= f.submit %>

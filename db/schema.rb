@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 20170530115704) do
     t.string   "blend"
     t.string   "code"
     t.string   "unit"
+    t.integer  "res_id"
     t.integer  "report_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

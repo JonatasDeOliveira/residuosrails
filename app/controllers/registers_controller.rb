@@ -64,32 +64,25 @@ class RegistersController < ApplicationController
   # POST /update_weight
   def update_weight
     if register_params[:residue_id] != nil then
-      res = Residue.find(register_params[:residue_id])
-      reg = update_date(res)
-      res.registers.create(weight: reg.weight + register_params[:weight].to_f())
+      update_date_weight(Residue.find(register_params[:residue_id]))
     end
     if register_params[:laboratory_id] != nil then
-      lab = Laboratory.find(register_params[:laboratory_id])
-      reg = update_date(lab)
-      lab.registers.create(weight: reg.weight + register_params[:weight].to_f())
+      update_date_weight(Laboratory.find(register_params[:laboratory_id]))
     end
     if register_params[:department_id] != nil then
-      dep = Department.find(register_params[:department_id])
-      reg = update_date(dep)
-      dep.registers.create(weight: reg.weight + register_params[:weight].to_f())
+      update_date_weight(Department.find(register_params[:department_id]))
     end
     if register_params[:collection_id] != nil then
-      col = Collection.find(register_params[:collection_id])
-      reg = update_date(col)
-      col.registers.create(weight: reg.weight + register_params[:weight].to_f())
+      update_date_weight(Collection.find(register_params[:collection_id]))
     end
   end
   
-  def update_date(obj)
-    reg = obj.registers.last
-    reg.updated_at = Time.now
-    reg.save
-    reg
+  def update_date_weight(obj)
+    reg_old = obj.registers.last
+    obj.registers.create(weight: reg_old.weight + register_params[:weight].to_f())
+    reg_old.updated_at = obj.registers.last.created_at
+    reg_old.save
+    reg_old
   end
 
   private

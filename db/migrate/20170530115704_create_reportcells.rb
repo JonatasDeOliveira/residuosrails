@@ -11,6 +11,7 @@ class CreateReportcells < ActiveRecord::Migration[5.0]
       t.string :blend
       t.string :code
       t.string :unit
+      t.integer :res_id
       t.belongs_to :report, index: true, foreign_key: true
 
       t.timestamps

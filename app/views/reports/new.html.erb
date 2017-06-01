@@ -2,4 +2,23 @@
 
 <%= render 'form', report: @report %>
 
+<% if @report.generate_by == 1 %>
+    <% Department.all.order(:name).each do |dep| %>
+        <p> <%= dep.name %></p>
+    <% end %>
+<% else %>
+    <%if @report.generate_by == 2 %>
+        <% Laboratory.all.order(:name).each do |dep| %>
+            <p> <%= dep.name %></p>
+        <% end %>
+    <% else @report.generate_by == 3 %>
+        <% Residue.all.order(:name).each do |dep| %>
+            <p> <%= dep.name %></p>
+        <% end %>
+    <% end %>
+<% end %>
+
+<%= link_to 'Novo Departamento', new_department_path %> <br>
+<%= link_to 'Novo laboratorio', new_laboratory_path %> <br>
+<%= link_to 'Novo residuo', new_residue_path %> <br>
 <%= link_to 'Back', reports_path %>

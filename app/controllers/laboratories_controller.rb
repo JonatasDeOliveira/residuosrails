@@ -14,6 +14,7 @@ class LaboratoriesController < ApplicationController
 
   # GET /laboratories/new
   def new
+    @departments = Department.all
     @laboratory = Laboratory.new
   end
 
